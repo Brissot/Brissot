@@ -1,4 +1,4 @@
-light theme > dark theme
+light theme > dark theme\n
 Sorry, I don't make the rules
 <!---
 Brissot/Brissot is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
