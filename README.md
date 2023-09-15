@@ -1,4 +1,4 @@
-light theme > dark theme
+light theme > dark theme. 💛solarized light
 
 maryland 🐢
 <!---
