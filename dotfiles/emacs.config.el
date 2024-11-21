@@ -2,11 +2,20 @@
 (setq inhibit-startup-screen t)
 (setq initial-startup-message "")
 
+;; no top bars
+(tool-bar-mode 0)
+(menu-bar-mode 0)
+
 ;; 2 spaces only, ok?
 (setq standard-indent 2)
-(setq column-number-mode t)
 (setq tab-width 2)
 (setq indent-tabs-mode nil)
+
+;; give me column numbers
+(setq column-number-mode t)
+(setq display-line-numbers-type 'relative)
+(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+(setq-default show-trailing-whitespace t)
 
 ;; remember
 (save-place-mode 1)
@@ -22,11 +31,15 @@
 (setq mouse-yank-at-point t)
 (setq select-enable-clipboard t)
 
-;; no littering!
-(require 'no-littering)
-(let ((dir (no-littering-expand-var-file-name "lock-files/")))
- (make-directory dir t)
- (setq lock-file-name-transforms `((".*" ,dir t))))
+;; 80 column line
+(setq-default display-fill-column-indicator-column 80) ;; emacs 0 indexed cols
+(setq-default display-fill-column-indicator-character ?🖤)
+(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
+
+;; completions
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode 1)
 
 ;; solarized light <3 - just let custom.el manage this section
 (custom-set-variables
@@ -45,5 +58,36 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:family "SF Mono" :foundry "APPL" 
+ '(default ((t (:family "SF Mono" :foundry "APPL"
                 :slant normal :weight normal :height 158 :width normal)))))
+
+
+;;;;
+;;    leaving "emacs out of the box" area
+;;;;
+
+;; melpa package manager
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(package-initialize)
+
+;; no littering!
+(require 'no-littering)
+(let ((dir (no-littering-expand-var-file-name "lock-files/")))
+ (make-directory dir t)
+ (setq lock-file-name-transforms `((".*" ,dir t))))
+
+;; all languages
+(require 'lsp-mode)
+(use-package lsp-ui :commands lsp-ui-mode)
+
+;; javascript
+;; maybe worth inspecting in the future:
+;;   https://wavesurfer.xyz/blog/emacs-javascript
+; (require 'js2-mode)
+; (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(add-hook 'js-mode-hook 'lsp-deferred)
+
+;; python
+;; https://slinkp.com/python-emacs-lsp-20231229.html
+(add-hook 'python-mode-hook 'lsp-deferred)
