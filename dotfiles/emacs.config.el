@@ -6,6 +6,9 @@
 (tool-bar-mode 0)
 (menu-bar-mode 0)
 
+;; final new line
+(setq mode-require-final-newline nil)
+
 ;; 2 spaces only, ok?
 (setq standard-indent 2)
 (setq tab-width 2)
@@ -15,7 +18,18 @@
 (setq column-number-mode t)
 (setq display-line-numbers-type 'relative)
 (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+
+;; red highlight on trailing whitespace
 (setq-default show-trailing-whitespace t)
+(setq-default indicate-empty-lines t)
+
+;; when paragraph filling (fitting within a certain amount of columns with M-q,
+;; this makes it so that it goes within 80 lines. ChatGPT says the first
+;; variable helps with the space at the end, but it doesn't
+(setq-default display-fill-column-indicator-character ?~)
+(setq-default display-fill-column-indicator-column 80)
+(display-fill-column-indicator-mode t)
+
 
 ;; remember
 (save-place-mode 1)
@@ -41,6 +55,21 @@
 (setq ido-everywhere t)
 (ido-mode 1)
 
+;; duplicate lines
+(defun duplicate-line ()
+  "Duplicate the current line"
+  (interactive)
+  (let ((column (- (point) (point-at-bol)))
+	(line (let ((s (thing-at-point 'line t)))
+		(if s (string-remove-suffix "\n" s) ""))))
+    (move-end-of-line 1)
+    (newline)
+    (insert line)
+    (move-beginning-of-line 1)
+    (forward-char column)))
+
+(global-set-key (kbd "C-,") 'duplicate-line)
+
 ;; solarized light <3 - just let custom.el manage this section
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -59,7 +88,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "SF Mono" :foundry "APPL"
-                :slant normal :weight normal :height 158 :width normal)))))
+                :slant normal :weight normal :height 165 :width normal)))))
 
 
 ;;;;
@@ -78,16 +107,17 @@
  (setq lock-file-name-transforms `((".*" ,dir t))))
 
 ;; all languages
-(require 'lsp-mode)
-(use-package lsp-ui :commands lsp-ui-mode)
+;(require 'lsp-mode)
+;(use-package lsp-ui :commands lsp-ui-mode)
 
 ;; javascript
 ;; maybe worth inspecting in the future:
 ;;   https://wavesurfer.xyz/blog/emacs-javascript
 ; (require 'js2-mode)
 ; (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-(add-hook 'js-mode-hook 'lsp-deferred)
+;(add-hook 'js-mode-hook 'lsp-deferred)
 
 ;; python
 ;; https://slinkp.com/python-emacs-lsp-20231229.html
-(add-hook 'python-mode-hook 'lsp-deferred)
+;(add-hook 'python-mode-hook 'lsp-deferred)
+
