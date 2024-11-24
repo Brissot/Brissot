@@ -1,3 +1,13 @@
+;; Sid Su's EMACS Config
+;;
+;; You may look at this and wonder, "Aren't you just back at VSCODE using this
+;; config? You're mostly right, and I do want to remove parts of this config
+;; bit by bit, but it's like training wheels. I need to be able to keep
+;; which files are important in my head,  and until that happens, I need the
+;; little sidebar on the side. I need to be able to keep the open files in my
+;; head, and until that happens, the tabbed topbar needs to be there
+
+
 ;; stop the annoying start screen from starting
 (setq inhibit-startup-screen t)
 (setq initial-startup-message "")
@@ -38,6 +48,10 @@
 (setq auto-save-file-name-transforms
       '((".*" "~/.config/emacs/autosave" t)))
 
+;; remember session
+(desktop-load-default)
+(desktop-read)
+
 ;; mouse and system integration stuff
 (setq pixel-scroll-precision-large-scroll-height 40.0)
 (setq mouse-wheel-flip-direction t)
@@ -55,6 +69,34 @@
 (setq ido-everywhere t)
 (ido-mode 1)
 
+;; tabs
+(global-tab-line-mode t)
+
+;; Customize tab-line faces
+;; Customize tab-line faces with padding
+(custom-set-faces
+ '(tab-line
+   ((t (:background "#fdf6e3" :foreground "#586e75" :box (:line-width -1 :color "#93a1a1") :height 0.9))))
+ '(tab-line-tab
+   ((t (:background "#eee8d5" :foreground "#268bd2" :box (:line-width 4 :color "#93a1a1")))))
+ '(tab-line-tab-inactive
+   ((t (:background "#fdf6e3" :foreground "#93a1a1" :box (:line-width 4 :color "#93a1a1")))))
+ '(tab-line-tab-current
+   ((t (:background "#eee8d5" :foreground "#b58900" :box (:line-width 4 :color "#93a1a1")))))
+ '(tab-line-highlight
+   ((t (:background "#eee8d5" :foreground "#d33682" :box (:line-width 4 :color "#93a1a1"))))))
+
+;; file explorer
+(setq treemacs-position 'right)
+(global-set-key (kbd "<f8>") 'treemacs)
+(setq treemacs-width 20) ; Set the width of the Treemacs window
+(setq treemacs-follow-mode t) ; Automatically follow the current file
+(setq treemacs-filewatch-mode t) ; Watch for changes in the project
+(use-package treemacs
+  :ensure t
+  :config
+  (setq treemacs-position 'right))
+
 ;; duplicate lines
 (defun duplicate-line ()
   "Duplicate the current line"
@@ -68,6 +110,21 @@
     (move-beginning-of-line 1)
     (forward-char column)))
 
+(custom-set-faces
+ '(treemacs-root-face
+   ((t (:height 0.6 :inherit default)))) ; Root node
+ '(treemacs-directory-face
+   ((t (:height 0.6 :inherit default)))) ; Directory names
+ '(treemacs-file-face
+   ((t (:height 0.6 :inherit default)))) ; File names
+ '(treemacs-root-active-face
+   ((t (:height 0.6 :weight bold :inherit default)))) ; Active root node
+ (custom-set-faces)
+)
+
+
+
+;; C-, to dupe line
 (global-set-key (kbd "C-,") 'duplicate-line)
 
 ;; solarized light <3 - just let custom.el manage this section
@@ -88,7 +145,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "SF Mono" :foundry "APPL"
-                :slant normal :weight normal :height 165 :width normal)))))
+                :slant normal :weight normal :height 140 :width normal)))))
 
 
 ;;;;
