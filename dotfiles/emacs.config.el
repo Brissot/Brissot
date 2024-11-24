@@ -49,8 +49,8 @@
       '((".*" "~/.config/emacs/autosave" t)))
 
 ;; remember session
-(desktop-load-default)
-(desktop-read)
+;(desktop-load-default)
+;(desktop-read)
 
 ;; mouse and system integration stuff
 (setq pixel-scroll-precision-large-scroll-height 40.0)
@@ -111,6 +111,22 @@
     (forward-char column)))
 
 (custom-set-faces
+ '(treemacs-git-unmodified-face
+   ((t (:height 0.6 :inherit default)))) ; Unmodified files
+ '(treemacs-git-modified-face
+   ((t (:height 0.6 :foreground "#268bd2" :inherit default)))) ; Modified files
+ '(treemacs-git-ignored-face
+   ((t (:height 0.6 :foreground "#93a1a1" :inherit default)))) ; Ignored files
+ '(treemacs-git-untracked-face
+   ((t (:height 0.6 :foreground "#cb4b16" :inherit default)))) ; Untracked files
+ '(treemacs-git-added-face
+   ((t (:height 0.6 :foreground "#859900" :inherit default)))) ; Newly added files
+ '(treemacs-git-renamed-face
+   ((t (:height 0.6 :foreground "#b58900" inherit default)))) ; Renamed files
+ '(treemacs-git-conflict-face
+   ((t (:height 0.6 :foreground "#6c71c4" :inherit default)))) ; Files with conflicts
+ '(treemacs-git-deleted-face
+   ((t (:height 0.6 :foreground "#dc322f" :inherit default)))) ; Solarized Red
  '(treemacs-root-face
    ((t (:height 0.6 :inherit default)))) ; Root node
  '(treemacs-directory-face
@@ -119,10 +135,9 @@
    ((t (:height 0.6 :inherit default)))) ; File names
  '(treemacs-root-active-face
    ((t (:height 0.6 :weight bold :inherit default)))) ; Active root node
- (custom-set-faces)
-)
+ )
 
-
+(setq treemacs-resize-icons 10) ; Set icon size in pixels (default is 22)
 
 ;; C-, to dupe line
 (global-set-key (kbd "C-,") 'duplicate-line)
