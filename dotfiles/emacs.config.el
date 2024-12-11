@@ -16,9 +16,6 @@
 (tool-bar-mode 0)
 (menu-bar-mode 0)
 
-;; final new line
-(setq mode-require-final-newline nil)
-
 ;; 2 spaces only, ok?
 (setq standard-indent 2)
 (setq tab-width 2)
@@ -32,6 +29,11 @@
 ;; red highlight on trailing whitespace
 (setq-default show-trailing-whitespace t)
 (setq-default indicate-empty-lines t)
+
+;; on save, newline at the end of the file and remove trailing whitespace
+(setq-default require-final-newline t)
+(setq-default mode-require-final-newline t)
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; when paragraph filling (fitting within a certain amount of columns with M-q,
 ;; this makes it so that it goes within 80 lines. ChatGPT says the first
@@ -112,29 +114,29 @@
 
 (custom-set-faces
  '(treemacs-git-unmodified-face
-   ((t (:height 0.6 :inherit default)))) ; Unmodified files
+   ((t (:height 0.4 :inherit default)))) ; Unmodified files
  '(treemacs-git-modified-face
-   ((t (:height 0.6 :foreground "#268bd2" :inherit default)))) ; Modified files
+   ((t (:height 0.4 :foreground "#268bd2" :inherit default)))) ; Modified files
  '(treemacs-git-ignored-face
-   ((t (:height 0.6 :foreground "#93a1a1" :inherit default)))) ; Ignored files
+   ((t (:height 0.4 :foreground "#93a1a1" :inherit default)))) ; Ignored files
  '(treemacs-git-untracked-face
-   ((t (:height 0.6 :foreground "#cb4b16" :inherit default)))) ; Untracked files
+   ((t (:height 0.4 :foreground "#cb4b16" :inherit default)))) ; Untracked files
  '(treemacs-git-added-face
-   ((t (:height 0.6 :foreground "#859900" :inherit default)))) ; Newly added files
+   ((t (:height 0.4 :foreground "#859900" :inherit default)))) ; Newly added files
  '(treemacs-git-renamed-face
-   ((t (:height 0.6 :foreground "#b58900" inherit default)))) ; Renamed files
+   ((t (:height 0.4 :foreground "#b58900" :inherit default)))) ; Renamed files
  '(treemacs-git-conflict-face
-   ((t (:height 0.6 :foreground "#6c71c4" :inherit default)))) ; Files with conflicts
+   ((t (:height 0.4 :foreground "#6c71c4" :inherit default)))) ; Files with conflicts
  '(treemacs-git-deleted-face
-   ((t (:height 0.6 :foreground "#dc322f" :inherit default)))) ; Solarized Red
+   ((t (:height 0.4 :foreground "#dc322f" :inherit default)))) ; Solarized Red
  '(treemacs-root-face
-   ((t (:height 0.6 :inherit default)))) ; Root node
+   ((t (:height 0.4 :inherit default)))) ; Root node
  '(treemacs-directory-face
-   ((t (:height 0.6 :inherit default)))) ; Directory names
+   ((t (:height 0.4 :inherit default)))) ; Directory names
  '(treemacs-file-face
-   ((t (:height 0.6 :inherit default)))) ; File names
+   ((t (:height 0.4 :inherit default)))) ; File names
  '(treemacs-root-active-face
-   ((t (:height 0.6 :weight bold :inherit default)))) ; Active root node
+   ((t (:height 0.4 :weight bold :inherit default)))) ; Active root node
  )
 
 (setq treemacs-resize-icons 10) ; Set icon size in pixels (default is 22)
@@ -192,4 +194,3 @@
 ;; python
 ;; https://slinkp.com/python-emacs-lsp-20231229.html
 ;(add-hook 'python-mode-hook 'lsp-deferred)
-
