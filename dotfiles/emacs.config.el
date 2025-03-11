@@ -16,15 +16,15 @@
 (tool-bar-mode 0)
 (menu-bar-mode 0)
 
-;; 2 spaces only, ok?
-(setq standard-indent 2)
-(setq tab-width 2)
+;; 4 spaces, ok?
+(setq standard-indent 4)
+(setq tab-width 4)
 (setq indent-tabs-mode nil)
 
 ;; give me column numbers
 (setq column-number-mode t)
-(setq display-line-numbers-type 'relative)
-(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+;(setq display-line-numbers-type 'relative)
+;(add-hook 'prog-mode-hook 'display-line-numbers-mode)
 
 ;; red highlight on trailing whitespace
 (setq-default show-trailing-whitespace t)
@@ -34,14 +34,6 @@
 (setq-default require-final-newline t)
 (setq-default mode-require-final-newline t)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-;; when paragraph filling (fitting within a certain amount of columns with M-q,
-;; this makes it so that it goes within 80 lines. ChatGPT says the first
-;; variable helps with the space at the end, but it doesn't
-(setq-default display-fill-column-indicator-character ?~)
-(setq-default display-fill-column-indicator-column 80)
-(display-fill-column-indicator-mode t)
-
 
 ;; remember
 (save-place-mode 1)
@@ -63,41 +55,57 @@
 
 ;; 80 column line
 (setq-default display-fill-column-indicator-column 80) ;; emacs 0 indexed cols
-(setq-default display-fill-column-indicator-character ?🖤)
+(setq-default display-fill-column-indicator-character ?#)
 (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
+(display-fill-column-indicator-mode t)
 
 ;; completions
-(setq ido-enable-flex-matching t)
-(setq ido-everywhere t)
-(ido-mode 1)
+;(setq ido-enable-flex-matching t)
+;(setq ido-everywhere t)
+;(ido-mode 1)
 
 ;; tabs
 (global-tab-line-mode t)
+(setq tab-bar-select-tab-modifiers 'control)
+(setq tab-bar-tab-hints t)
+(setq tab-line-separator "  | ")
 
 ;; Customize tab-line faces
 ;; Customize tab-line faces with padding
-(custom-set-faces
- '(tab-line
-   ((t (:background "#fdf6e3" :foreground "#586e75" :box (:line-width -1 :color "#93a1a1") :height 0.9))))
- '(tab-line-tab
-   ((t (:background "#eee8d5" :foreground "#268bd2" :box (:line-width 4 :color "#93a1a1")))))
- '(tab-line-tab-inactive
-   ((t (:background "#fdf6e3" :foreground "#93a1a1" :box (:line-width 4 :color "#93a1a1")))))
- '(tab-line-tab-current
-   ((t (:background "#eee8d5" :foreground "#b58900" :box (:line-width 4 :color "#93a1a1")))))
- '(tab-line-highlight
-   ((t (:background "#eee8d5" :foreground "#d33682" :box (:line-width 4 :color "#93a1a1"))))))
+(set-face-attribute 'tab-line nil
+		    :background "#fdf6e3"
+		    :foreground "#586e75"
+		    :box t
+		    :height 0.9
+		    :family "San Francisco" :height 140)
 
-;; file explorer
-(setq treemacs-position 'right)
-(global-set-key (kbd "<f8>") 'treemacs)
-(setq treemacs-width 20) ; Set the width of the Treemacs window
-(setq treemacs-follow-mode t) ; Automatically follow the current file
-(setq treemacs-filewatch-mode t) ; Watch for changes in the project
-(use-package treemacs
-  :ensure t
-  :config
-  (setq treemacs-position 'right))
+(set-face-attribute 'tab-line-tab nil
+		    :background "#eee8d5"
+		    :foreground "#268bd2"
+		    :box t
+		    :family "San Francisco"
+		    :height 140)
+
+(set-face-attribute 'tab-line-tab-inactive nil
+		    :background "#fdf6e3"
+		    :foreground "#93a1a1"
+		    :box t
+		    :family "San Francisco"
+		    :height 140)
+
+(set-face-attribute 'tab-line-tab-current nil
+		    :background "#eee8d5"
+		    :foreground "#b58900"
+		    :box t
+		    :family "San Francisco"
+		    :height 140)
+
+(set-face-attribute 'tab-line-highlight nil
+		    :background "#eee8d5"
+		    :foreground "#d33682"
+		    :box '(:line-width (2 . 2))
+		    :family "San Francisco"
+		    :height 140)
 
 ;; duplicate lines
 (defun duplicate-line ()
@@ -111,33 +119,6 @@
     (insert line)
     (move-beginning-of-line 1)
     (forward-char column)))
-
-(custom-set-faces
- '(treemacs-git-unmodified-face
-   ((t (:height 0.4 :inherit default)))) ; Unmodified files
- '(treemacs-git-modified-face
-   ((t (:height 0.4 :foreground "#268bd2" :inherit default)))) ; Modified files
- '(treemacs-git-ignored-face
-   ((t (:height 0.4 :foreground "#93a1a1" :inherit default)))) ; Ignored files
- '(treemacs-git-untracked-face
-   ((t (:height 0.4 :foreground "#cb4b16" :inherit default)))) ; Untracked files
- '(treemacs-git-added-face
-   ((t (:height 0.4 :foreground "#859900" :inherit default)))) ; Newly added files
- '(treemacs-git-renamed-face
-   ((t (:height 0.4 :foreground "#b58900" :inherit default)))) ; Renamed files
- '(treemacs-git-conflict-face
-   ((t (:height 0.4 :foreground "#6c71c4" :inherit default)))) ; Files with conflicts
- '(treemacs-git-deleted-face
-   ((t (:height 0.4 :foreground "#dc322f" :inherit default)))) ; Solarized Red
- '(treemacs-root-face
-   ((t (:height 0.4 :inherit default)))) ; Root node
- '(treemacs-directory-face
-   ((t (:height 0.4 :inherit default)))) ; Directory names
- '(treemacs-file-face
-   ((t (:height 0.4 :inherit default)))) ; File names
- '(treemacs-root-active-face
-   ((t (:height 0.4 :weight bold :inherit default)))) ; Active root node
- )
 
 (setq treemacs-resize-icons 10) ; Set icon size in pixels (default is 22)
 
@@ -162,7 +143,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:family "SF Mono" :foundry "APPL"
-                :slant normal :weight normal :height 140 :width normal)))))
+                :slant normal :weight normal :height 180 :width normal)))))
 
 
 ;;;;
@@ -173,12 +154,6 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (package-initialize)
-
-;; no littering!
-(require 'no-littering)
-(let ((dir (no-littering-expand-var-file-name "lock-files/")))
- (make-directory dir t)
- (setq lock-file-name-transforms `((".*" ,dir t))))
 
 ;; all languages
 ;(require 'lsp-mode)
