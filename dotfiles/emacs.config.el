@@ -23,8 +23,12 @@
 
 ;; give me column numbers
 (setq column-number-mode t)
-;(setq display-line-numbers-type 'relative)
-;(add-hook 'prog-mode-hook 'display-line-numbers-mode)
+
+;; 80 column line (set to 79 since emacs 0 indexes columns)
+(setq-default display-fill-column-indicator-column 79)
+(setq-default display-fill-column-indicator-character ?#)
+(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
+(display-fill-column-indicator-mode t)
 
 ;; red highlight on trailing whitespace
 (setq-default show-trailing-whitespace t)
@@ -35,34 +39,19 @@
 (setq-default mode-require-final-newline t)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-;; remember
+;; remember where we were in the file
 (save-place-mode 1)
 (setq backup-directory-alist `(("." . "~/.config/emacs/backups")))
 (setq auto-save-list-file-prefix "~/.config/emacs/autosave")
 (setq auto-save-file-name-transforms
       '((".*" "~/.config/emacs/autosave" t)))
 
-;; remember session
-;(desktop-load-default)
-;(desktop-read)
+;; reopen last used files
+(desktop-save-mode 1)
+'(desktop-path '("/home/egirl/.config/emacs/.emacs.desktop"))
 
-;; mouse and system integration stuff
-(setq pixel-scroll-precision-large-scroll-height 40.0)
-(setq mouse-wheel-flip-direction t)
-(setq mouse-wheel-tilt-scroll t)
-(setq mouse-yank-at-point t)
+;; make emacs clipboard the same as system clipboard
 (setq select-enable-clipboard t)
-
-;; 80 column line
-(setq-default display-fill-column-indicator-column 80) ;; emacs 0 indexed cols
-(setq-default display-fill-column-indicator-character ?#)
-(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
-(display-fill-column-indicator-mode t)
-
-;; completions
-;(setq ido-enable-flex-matching t)
-;(setq ido-everywhere t)
-;(ido-mode 1)
 
 ;; tabs
 (global-tab-line-mode t)
@@ -107,7 +96,7 @@
 		    :family "San Francisco"
 		    :height 140)
 
-;; duplicate lines
+;; duplicate lines in 1 (one) keystroke!
 (defun duplicate-line ()
   "Duplicate the current line"
   (interactive)
@@ -120,10 +109,17 @@
     (move-beginning-of-line 1)
     (forward-char column)))
 
-(setq treemacs-resize-icons 10) ; Set icon size in pixels (default is 22)
-
 ;; C-, to dupe line
 (global-set-key (kbd "C-,") 'duplicate-line)
+
+;; apple's font  - let custom.el manage this part
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(default ((t (:family "SF Mono" :foundry "APPL" :slant normal :weight normal :height 180 :width normal)))))
+
 
 ;; solarized light <3 - just let custom.el manage this section
 (custom-set-variables
@@ -133,27 +129,20 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(solarized-light))
  '(custom-safe-themes
-   '("4c56af497ddf0e30f65a7232a8ee21b3d62a8c332c6b268c81e9ea99b11da0d3"
-     default)))
-
-;; apple's font  - let custom.el manage this part
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:family "SF Mono" :foundry "APPL"
-                :slant normal :weight normal :height 180 :width normal)))))
-
+   '("4c56af497ddf0e30f65a7232a8ee21b3d62a8c332c6b268c81e9ea99b11da0d3" default))
+ )
 
 ;;;;
 ;;    leaving "emacs out of the box" area
+;;
+;;    everything commented out in this file, because I want this file to work
+;;    on stock emacs
 ;;;;
 
 ;; melpa package manager
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
+;(require 'package)
+;(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+;(package-initialize)
 
 ;; all languages
 ;(require 'lsp-mode)
