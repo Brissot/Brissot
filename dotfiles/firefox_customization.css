@@ -1,0 +1,7 @@
+/* Add your own custom styles here */
+
+/* So the buttons are not too close to the edge */
+.titlebar-buttonbox-container {
+	margin-left: 20px !important;
+}
+
